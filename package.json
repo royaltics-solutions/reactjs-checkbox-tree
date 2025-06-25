@@ -40,8 +40,9 @@
     "test-style-equivalence": "postcss .css-compare/less.css --output .css-compare/less.css && postcss .css-compare/scss.css --output .css-compare/scss.css && cmp .css-compare/less.css .css-compare/scss.css"
   },
   "peerDependencies": {
-    "react": "^15.3.0 || ^16.0.0 || ^17.0.0 || ^18.0.0"
-  },
+    "react": "^16.8 || ^17.0 || ^18.0 || ^19.0",
+    "react-dom": "^16.8 || ^17.0 || ^18.0 || ^19.0"
+  }
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/eslint-parser": "^7.13.10",
