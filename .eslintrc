@@ -1,13 +1,135 @@
 {
-  "extends": "takiyon-react",
+  "ignorePatterns": [
+    "webpack.config.js",
+     "webpack.config.test.js",
+     "register-babel.js"
+  ], // Añade esto
+  "extends": [
+    // UPDATE: Reintroduce la base de reglas de React. Esto es crucial para reglas como 'react/jsx-filename-extension'.
+    // Si 'takiyon-react' es un preset de ESLint que incluye 'plugin:react/recommended', puedes volver a usarlo.
+    // Si no, debes extender directamente 'plugin:react/recommended'.
+    "plugin:react/recommended", // UPDATE: Asegura que las reglas de React estén cargadas
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript"
+  ],
   "env": {
-    "node": true
+    "node": true,
+    "browser": true,
+    "es2021": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module"
+    // "project": "./tsconfig.json" // Descomentar si usas reglas que requieren análisis de tipo
+  },
+  "plugins": [
+    "react", // UPDATE: Asegura que el plugin 'react' esté listado
+    "@typescript-eslint",
+    "import"
+  ],
+  "rules": {
+    "linebreak-style": [
+      "error",
+      "windows"
+    ],
+    "indent": "off",
+    "quotes": "off",
+    "semi": "off",
+    "no-unused-vars": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off", // Mantener apagado si usas TypeScript para props
+    "react/jsx-uses-react": "off", // Para React 17+
+    "react/jsx-uses-vars": "off", // Para React 17+
+    "jsx-a11y/alt-text": "off",
+    "no-underscore-dangle": "off",
+    "react/require-default-props": "off",
+    "react/no-unused-prop-types": "off",
+    "no-use-before-define": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "comma-dangle": "off",
+    "no-multiple-empty-lines": "off",
+    "arrow-body-style": "off",
+    "object-curly-newline": "off",
+    "eol-last": "off",
+    "no-trailing-spaces": "off",
+    "max-len": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".jsx",
+          ".tsx"
+        ]
+      }
+    ], // UPDATE: Vuelve a habilitar esta regla para .jsx y .tsx
+    "no-undef": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-use-before-define": [
+      "error"
+    ],
+    // "import/no-unresolved": "off", // Descomentar si sigue dando problemas de resolución de módulos
+    "import/default": "off" // UPDATE: Deshabilita esta regla si tienes problemas con CommonJS y React 17+
   },
   "settings": {
+    "react": {
+      "version": "detect"
+    },
     "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true
+      },
       "webpack": {
         "config": "webpack.config.test.js"
       }
+    },
+    "import/extensions": [
+      ".js",
+      ".jsx",
+      ".ts",
+      ".tsx"
+    ],
+    "import/parsers": {
+      // UPDATE: Asegura que .js y .jsx sean parseados por el parser predeterminado (o babel-eslint si lo usas)
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
+      // Para .js/.jsx, ESLint usa su parser predeterminado, que ya maneja JSX si 'jsx' está en parserOptions.
     }
-  }
+  },
+  "overrides": [
+    {
+      // Reglas específicas para archivos TypeScript/TSX
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "rules": {
+        // Asegúrate de que las reglas de import/default no causen problemas específicos para TS
+        // (Aunque normalmente 'import/default' se desactiva para TS por el comportamiento de import/export)
+      }
+    },
+    {
+      // Reglas específicas para archivos JavaScript/JSX (como tu index.jsx)
+      "files": [
+        "*.js",
+        "*.jsx"
+      ],
+      "rules": {
+        // Puedes añadir reglas aquí si quieres un linting diferente para JS vs TS
+        // Por ejemplo, si 'import/default' sigue dando problemas solo en JSX
+        // "import/default": "off" // O puedes mantenerla deshabilitada globalmente como arriba
+      }
+    }
+  ]
 }

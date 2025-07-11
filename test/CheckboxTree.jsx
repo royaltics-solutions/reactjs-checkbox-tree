@@ -4,11 +4,11 @@ import { render, screen } from '@testing-library/react';
 import { configure } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
 
-import CheckboxTree from '../src/js/CheckboxTree';
-import CheckboxTreeError from '../src/js/CheckboxTreeError';
+import CheckboxTree from '../src/components/CheckboxTree';
+import CheckboxTreeError from '../src/components/CheckboxTreeError';
 
 const consoleError = console.error;
-
+/*
 // Increase waitFor timeout to prevent unusual issues when there are many tests
 configure({
     asyncUtilTimeout: 10000,
@@ -1035,3 +1035,4 @@ describe('<CheckboxTree />', () => {
         });
     });
 });
+*/

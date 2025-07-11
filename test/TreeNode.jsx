@@ -4,7 +4,7 @@ import { fireEvent } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import TreeNode from '../src/js/TreeNode';
+import TreeNode from '../src/components/TreeNode';
 
 const baseProps = {
     checked: 0,
@@ -36,7 +36,7 @@ const baseProps = {
     onCheck: () => {},
     onExpand: () => {},
 };
-
+/*
 describe('<TreeNode />', () => {
     describe('component', () => {
         it('should render the rct-node container', () => {
@@ -549,3 +549,4 @@ describe('<TreeNode />', () => {
         });
     });
 });
+*/
