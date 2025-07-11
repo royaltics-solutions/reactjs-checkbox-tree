@@ -1,4 +1,3 @@
-
 import classNames from 'classnames';
 import { nanoid } from 'nanoid';
 import React, { useState, useCallback, useMemo } from 'react';
@@ -19,20 +18,20 @@ function CheckboxTree(props: CheckboxTreeProps) {
 
 	const [componentId] = useState<string>(id || `rct-${nanoid()}`);
 
-	// UPDATE: Usamos useMemo para crear y actualizar el NodeModel y derivar flatNodesState
+	// UPDATE: Use useMemo to create and update the NodeModel and derive flatNodesState
 	const [model, flatNodesState] = useMemo(() => {
-		// Crea una nueva instancia de NodeModel o re-usa la existente para evitar recrearla en cada render
-		// Siempre crea uno nuevo si hay cambio en mergedProps
+		// Create a new NodeModel instance or reuse existing to avoid recreating on every render
+		// Always create a new one if mergedProps change
 		const currentModel = new NodeModel(mergedProps);
-		// Asegura que el modelo se inicializa con los nodos y estados correctos
+		// Ensure the model is initialized with correct nodes and states
 		currentModel.flattenNodes(nodes);
 		currentModel.deserializeLists({ checked, expanded });
 
 		return [currentModel, currentModel.getNodes()];
-	}, [nodes, checked, expanded, disabled, mergedProps]); // Dependencias de useMemo
+	}, [nodes, checked, expanded, disabled, mergedProps]); // useMemo dependencies
 
-	// UPDATE: Eliminamos el useEffect complejo. El estado ahora se deriva de las props directamente via useMemo.
-	// useEffect para actualizaciones, ya no es necesario el estado interno prevPropsRef o su lógica compleja.
+	// UPDATE: Removed the complex useEffect. State is now derived directly from props via useMemo.
+	// useEffect for updates, no longer needed internal prevPropsRef or its complex logic.
 	// const prevPropsRef = useRef({ nodes, checked, expanded, disabled }); // REMOVED
 
 	const combineMemorizedIcons = useMemo(() => {
@@ -46,15 +45,15 @@ function CheckboxTree(props: CheckboxTreeProps) {
 		const newModel = model.clone();
 		newModel.toggleChecked(nodeInfo, nodeInfo.checked!, checkModel, noCascade);
 		onCheck(newModel.serializeList('checked'), { ...newModel.getNode(nodeInfo.value), ...nodeInfo } as CheckboxTreeNode);
-		// UPDATE: Forzamos un re-render actualizando el estado, lo que disparará el useMemo
-		// que a su vez re-calcula el NodeModel y flatNodesState.
+		// UPDATE: Force a re-render updating the state, triggering useMemo
+		// which recalculates NodeModel and flatNodesState.
 	}, [checkModel, noCascade, onCheck, model]);
 
 	const onExpandHandler = useCallback((nodeInfo: TreeNodeInfo) => {
 		const newModel = model.clone();
 		newModel.toggleNode(nodeInfo.value, 'expanded', nodeInfo.expanded!);
 		onExpand(newModel.serializeList('expanded'), { ...newModel.getNode(nodeInfo.value), ...nodeInfo } as CheckboxTreeNode);
-		// UPDATE: No es necesario setFlatNodesState aquí si las props son controladas.
+		// UPDATE: No need to setFlatNodesState here if props are controlled.
 	}, [onExpand, model]);
 
 	const onNodeClickHandler = useCallback((nodeInfo: TreeNodeInfo) => {
@@ -70,7 +69,7 @@ function CheckboxTree(props: CheckboxTreeProps) {
 			newModel.expandAllNodes(expand)
 				.serializeList('expanded'),
 		);
-		// UPDATE: No es necesario setFlatNodesState aquí si las props son controladas.
+		// UPDATE: No need to setFlatNodesState here if props are controlled.
 	}, [onExpand, model]);
 
 	const onExpandAllHandler = useCallback(() => {
@@ -84,19 +83,19 @@ function CheckboxTree(props: CheckboxTreeProps) {
 	const isEveryChildChecked = useCallback((node: CheckboxTreeNode): boolean => {
 		if (!node.children || node.children.length === 0) return true;
 		return node.children.every(
-			(child) => flatNodesState[child.value]?.checked, // UPDATE: Usar flatNodesState directamente
+			(child) => flatNodesState[child.value]?.checked, // UPDATE: Use flatNodesState directly
 		);
 	}, [flatNodesState]);
 
 	const isSomeChildChecked = useCallback((node: CheckboxTreeNode): boolean => {
 		if (!node.children || node.children.length === 0) return false;
 		return node.children.some(
-			(child) => flatNodesState[child.value]?.checked, // UPDATE: Usar flatNodesState directamente
+			(child) => flatNodesState[child.value]?.checked, // UPDATE: Use flatNodesState directly
 		);
 	}, [flatNodesState]);
 
 	const determineShallowCheckState = useCallback((node: CheckboxTreeNode, noCascadeProp: boolean): 0 | 1 | 2 => {
-		const flatNode = flatNodesState[node.value]; // UPDATE: Usar flatNodesState directamente
+		const flatNode = flatNodesState[node.value]; // UPDATE: Use flatNodesState directly
 
 		if (!flatNode) return 0;
 
@@ -108,7 +107,7 @@ function CheckboxTree(props: CheckboxTreeProps) {
 		if (isSomeChildChecked(node)) return 2;
 
 		return 0;
-	}, [isEveryChildChecked, isSomeChildChecked, flatNodesState]); // UPDATE: Dependencia flatNodesState
+	}, [isEveryChildChecked, isSomeChildChecked, flatNodesState]); // UPDATE: flatNodesState dependency
 
 	const renderTreeNodes = useCallback((treeNodesToRender: CheckboxTreeNode[], parent?: CheckboxTreeNode): React.ReactNode => {
 		return treeNodesToRender.map((node) => {
@@ -176,14 +175,14 @@ function CheckboxTree(props: CheckboxTreeProps) {
 					title={lang.expandAll}
 					onClick={onExpandAllHandler}
 				>
-					{icons.expandAll} Expandir
+					{icons.expandAll} Expand
 				</Button>
 				<Button
 					className="rct-option rct-option-collapse-all"
 					title={lang.collapseAll}
 					onClick={onCollapseAllHandler}
 				>
-					{icons.collapseAll} Contraer
+					{icons.collapseAll} Collapse
 				</Button>
 			</div>
 		);
